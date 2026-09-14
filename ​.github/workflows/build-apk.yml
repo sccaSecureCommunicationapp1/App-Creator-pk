@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Real Android APK
 
 on:
   push:
@@ -28,19 +28,18 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      - name: Get Dependencies
-        run: flutter pub get || echo "No Flutter project directory yet"
-
-      - name: Build Android APK
+      - name: Auto-Create Android Project Structure
         run: |
-          echo "Building APK for King of AI..."
-          # If Flutter project exists, build APK:
-          # flutter build apk --release
-          echo "Simulating APK Compilation Process..."
-          mkdir -p build/app/outputs/flutter-apk/
-          echo "Dummy APK File Content" > build/app/outputs/flutter-apk/app-release.apk
+          echo "Initializing Flutter Android environment and generating all required folders..."
+          flutter create . --force --org com.kingofai
 
-      - name: Upload APK Artifact
+      - name: Fetch Flutter Dependencies
+        run: flutter pub get
+
+      - name: Build Standalone Release APK
+        run: flutter build apk --release
+
+      - name: Upload Generated APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: KingOfAI-Generated-App
