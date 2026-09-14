@@ -1,0 +1,54 @@
+name: Auto Detect and Fix Errors
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  auto-fix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.x'
+          channel: 'stable'
+
+      - name: Ensure Full Project Structure Setup
+        run: |
+          echo "Checking and building missing Android/Flutter files..."
+          flutter create . --force --org com.kingofai
+
+      - name: Fetch Dependencies
+        run: flutter pub get
+
+      - name: Auto Fix Flutter Code Issues & Formatting
+        run: |
+          echo "Running auto-fix commands for code errors and formatting..."
+          dart format .
+          flutter fix --apply || echo "No automatic Dart fixes found."
+
+      - name: Commit and Push Fixed Code Back to Repository
+        run: |
+          git config --global user.name "King-of-AI-Bot"
+          git config --global user.email "bot@kingofai.studio"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Automated Fix: Cleaned code formatting and fixed repository errors"
+          git push
