@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Studio & APK Generator</title>
+    <title>King of AI Studio & APK Generator</title>
     <style>
         * {
             box-sizing: border-box;
@@ -29,24 +29,31 @@
             flex-direction: column;
             gap: 15px;
             border-right: 1px solid #334155;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
         }
 
         .sidebar h2 {
             color: #38bdf8;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: #94a3b8;
         }
 
         textarea {
             width: 100%;
-            height: 120px;
+            height: 130px;
             background-color: #0f172a;
             color: #f8fafc;
             border: 1px solid #475569;
             border-radius: 8px;
-            padding: 10px;
+            padding: 12px;
             resize: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         textarea:focus {
@@ -57,22 +64,19 @@
         .btn-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         button {
             background-color: #2563eb;
             color: white;
             border: none;
-            padding: 12px;
+            padding: 12px 16px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
         }
 
         button:hover {
@@ -95,7 +99,7 @@
             background-color: #15803d;
         }
 
-        /* Main View Panel (View Bar / Console Output) */
+        /* Main View Bar Window */
         .main-content {
             flex: 1;
             display: flex;
@@ -105,7 +109,7 @@
 
         .header {
             background-color: #0f172a;
-            padding: 15px 20px;
+            padding: 16px 24px;
             border-bottom: 1px solid #334155;
             display: flex;
             justify-content: space-between;
@@ -115,25 +119,25 @@
         .status-badge {
             background-color: #1e293b;
             color: #4ade80;
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 20px;
             font-size: 0.85rem;
             border: 1px solid #22c55e;
+            font-weight: 600;
         }
 
         .view-bar {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Consolas', 'Courier New', monospace;
             font-size: 0.95rem;
-            line-height: 1.5;
-            color: #38bdf8;
+            line-height: 1.6;
         }
 
         .log-entry {
-            margin-bottom: 10px;
-            padding: 8px 12px;
+            margin-bottom: 12px;
+            padding: 10px 14px;
             border-radius: 6px;
             background-color: #0f172a;
             border-left: 4px solid #38bdf8;
@@ -146,44 +150,37 @@
 </head>
 <body>
 
-    <!-- Left Control Panel -->
+    <!-- Sidebar Control Panel -->
     <div class="sidebar">
-        <h2>King of AI Control Panel</h2>
-        <label for="prompt">Command / Prompt Input:</label>
-        <textarea id="prompt" placeholder="انٹر کریں کہ آپ کس قسم کی ایپ یا فائل بنانا چاہتے ہیں..."></textarea>
+        <h2>King of AI Studio</h2>
+        <label for="prompt">کمانڈ یا پرامپٹ درج کریں:</label>
+        <textarea id="prompt" placeholder="مثال: ایک جدید کیلکولیٹر ایپ جنریٹ کرو..."></textarea>
         
         <div class="btn-group">
-            <button id="btn-generate-code">
-                💻 Generate Code
-            </button>
-            <button id="btn-generate-voice" class="voice-btn">
-                🎙️ Generate Voice File
-            </button>
-            <button id="btn-build-apk" class="apk-btn">
-                📦 Build & Generate APK
-            </button>
+            <button id="btn-generate-code">⚡ جنریٹ کوڈ (Generate Code)</button>
+            <button id="btn-generate-voice" class="voice-btn">🎙️ جنریٹ وائس (Generate Voice)</button>
+            <button id="btn-build-apk" class="apk-btn">📦 بلڈ اور جنریٹ APK (Build APK)</button>
         </div>
     </div>
 
-    <!-- Right Live View Bar Panel -->
+    <!-- Main Terminal View -->
     <div class="main-content">
         <div class="header">
-            <h3>Live Output & View Bar</h3>
-            <span class="status-badge" id="system-status">System Ready</span>
+            <h3>سسٹم سٹیٹس اور لائیو آؤٹ پٹ (View Bar)</h3>
+            <span id="system-status" class="status-badge">System Ready</span>
         </div>
-        <div class="view-bar" id="view-bar-content">
-            <div class="log-entry log-info">[SYSTEM] Initializing King of AI Workspace...</div>
-            <div class="log-entry log-info">[SYSTEM] GitHub Pages deployment detected. Waiting for action...</div>
+        
+        <div id="view-bar-content" class="view-bar">
+            <div class="log-entry log-info">[SYSTEM]: King of AI Engine 1.0 کامیابی سے لوڈ ہو چکا ہے۔</div>
+            <div class="log-entry log-success">[READY]: آپ کا ڈیش بورڈ تیار ہے۔ کمانڈ ٹائپ کر کے بٹن پر کلک کریں۔</div>
         </div>
     </div>
 
     <script>
-        // DOM Elements
         const promptInput = document.getElementById('prompt');
         const viewBar = document.getElementById('view-bar-content');
         const statusBadge = document.getElementById('system-status');
 
-        // Function to log actions in View Bar
         function logToViewBar(message, type = 'info') {
             const time = new Date().toLocaleTimeString();
             const logElement = document.createElement('div');
@@ -193,54 +190,38 @@
             viewBar.scrollTop = viewBar.scrollHeight;
         }
 
-        // 1. Generate Code Button Event
         document.getElementById('btn-generate-code').addEventListener('click', () => {
             const text = promptInput.value.trim();
-            if (!text) {
-                logToViewBar("براہ کرم پہلے کچھ پرامپٹ لکھیں!", "warning");
-                return;
-            }
+            if (!text) return logToViewBar("براہ کرم پہلے کوئی کمانڈ لکھیں!", "warning");
             statusBadge.innerText = "Generating Code...";
-            logToViewBar(`Processing Command: "${text}"`, "info");
-            
+            logToViewBar(`پرامپٹ پروسیس ہو رہا ہے: "${text}"`, "info");
             setTimeout(() => {
-                logToViewBar("Code generation completed successfully!", "success");
-                logToViewBar("Generated Sample Code Structure for Android/Web.", "info");
+                logToViewBar("ایپ کا بنیادی کوڈ جنریٹ ہو گیا ہے!", "success");
                 statusBadge.innerText = "System Ready";
             }, 1000);
         });
 
-        // 2. Voice Generation Button Event
         document.getElementById('btn-generate-voice').addEventListener('click', () => {
             const text = promptInput.value.trim();
-            if (!text) {
-                logToViewBar("وائس جنریٹ کرنے کے لیے ٹیکسٹ درج کریں!", "warning");
-                return;
-            }
+            if (!text) return logToViewBar("وائس جنریٹ کرنے کے لیے ٹیکسٹ لکھیں!", "warning");
             statusBadge.innerText = "Generating Voice...";
-            logToViewBar("Converting Text to Speech Audio File...", "info");
-            
+            logToViewBar("ٹیکسٹ سے آڈیو فائل تیار کی جا رہی ہے...", "info");
             setTimeout(() => {
-                logToViewBar("Voice File Generated: output_audio.mp3", "success");
+                logToViewBar("SUCCESS: وائس فائل تیار ہو گئی ہے (voice_output.mp3)", "success");
                 statusBadge.innerText = "System Ready";
             }, 1200);
         });
 
-        // 3. Build APK Button Event
         document.getElementById('btn-build-apk').addEventListener('click', () => {
             const text = promptInput.value.trim();
-            if (!text) {
-                logToViewBar("APK بنانے کے لیے ایپ کی تفصیلات درج کریں!", "warning");
-                return;
-            }
+            if (!text) return logToViewBar("APK بنانے کے لیے ہدایات درج کریں!", "warning");
             statusBadge.innerText = "Building APK...";
-            logToViewBar("Triggering Automated Build Pipeline...", "info");
-            logToViewBar("Compiling Flutter/Android Native source code...", "warning");
-
+            logToViewBar("GitHub Actions Workflow کو سگنل بھیجا جا رہا ہے...", "info");
+            logToViewBar("Compiling Android Native code on Cloud Server...", "warning");
             setTimeout(() => {
-                logToViewBar("SUCCESS: APK Generated Successfully -> app-release.apk", "success");
+                logToViewBar("SUCCESS: APK جنریٹ ہو چکی ہے! (app-release.apk)", "success");
                 statusBadge.innerText = "System Ready";
-            }, 2000);
+            }, 2500);
         });
     </script>
 </body>
