@@ -1,0 +1,24 @@
+{
+  "app_name": "King of AI Studio",
+  "version": "1.0.0",
+  "settings": {
+    "auto_build_apk": true,
+    "enable_voice_generation": true,
+    "theme": "dark_slate"
+  },
+  "api_endpoints": {
+    "github_actions": "https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/dispatches",
+    "voice_service": "https://api.elevenlabs.io/v1/text-to-speech",
+    "local_ai_core": "http://localhost:11434/api/generate"
+  },
+  "android_config": {
+    "default_package_name": "com.kingofai.generatedapp",
+    "target_sdk": 34,
+    "min_sdk": 24,
+    "enable_permissions": [
+      "android.permission.INTERNET",
+      "android.permission.RECORD_AUDIO",
+      "android.permission.WRITE_EXTERNAL_STORAGE"
+    ]
+  }
+}
